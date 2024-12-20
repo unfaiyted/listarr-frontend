@@ -1,51 +1,21 @@
-coverage/
-types/
-
-.turbo
-.nitro
-.output
-.vinxi
-
-*.log
-
-playground
-
-dist
-worker
-.solid
-
-# dependencies
 node_modules
 
-# IDEs and editors
-.idea
-.project
-.classpath
-*.launch
-.settings/
+# Output
+.output
+.vercel
+/.svelte-kit
+/build
 
-.tmp
-test/playwright-report
-
-# Temp
-gitignore
-
-.env
-
-# System Files
+# OS
 .DS_Store
 Thumbs.db
 
-# Local Netlify folder
-.netlify
-netlify
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
 
-# miniflare cache
-.mf
-.vercel
-
-vite.config.ts.timestamp*
-
-.nitro
-.output
-
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

@@ -1,41 +1,45 @@
-# use the official Bun image
-# see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1 as base
-WORKDIR /usr/src/app
+# Build stage
+FROM oven/bun:1 as builder
 
-# install dependencies into temp directory
-# this will cache them and speed up future builds
-FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
+WORKDIR /app
 
-# install with --production (exclude devDependencies)
-RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+# Copy package files
+COPY package.json bun.lockb ./
 
-# copy node_modules from temp directory
-# then copy all (non-ignored) project files into the image
-FROM base AS prerelease
-COPY --from=install /temp/dev/node_modules node_modules
+# Install dependencies
+RUN bun install --frozen-lockfile
+
+# Copy source files
 COPY . .
 
-# [optional] tests & build
+# Build the application
+RUN bun --bun run build
+
+# List directory contents to see where build files went
+# RUN ls -la
+
+# Production stage
+FROM oven/bun:1-slim as production
+
+WORKDIR /app
+
+# Copy build files and dependencies
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/bun.lockb ./
+COPY --from=builder /app ./
+# We'll uncomment the correct directory once we find it
+# COPY --from=builder /app/dist ./dist
+
+# Install production dependencies only
+RUN bun install --production --frozen-lockfile
+
+# Expose the port the app will run on
+EXPOSE 3000
+
+# Set environment variables
 ENV NODE_ENV=production
-ENV SERVER_PRESET=bun
-RUN bun test
-RUN bun run build
+ENV HOST=0.0.0.0
+ENV PORT=3000
 
-# copy production dependencies and source code into final image
-FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/bun.lockb .
-COPY --from=prerelease /usr/src/app/package.json .
-COPY --from=prerelease /usr/src/app/.vinxi .vinxi
-COPY --from=prerelease /usr/src/app/.output .output
-
-# run the app
-USER bun
-EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "run", "start" ]
+# Start the application
+CMD ["bun", "./build/index.js"]

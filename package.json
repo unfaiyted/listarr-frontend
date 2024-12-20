@@ -1,22 +1,56 @@
 {
-  "name": "example-with-tailwindcss",
-  "type": "module",
-  "scripts": {
-    "dev": "vinxi dev",
-    "build": "vinxi build",
-    "start": "vinxi start"
-  },
-  "dependencies": {
-    "@kobalte/core": "^0.13.7",
-    "@solidjs/router": "^0.15.0",
-    "@solidjs/start": "^1.0.10",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "solid-js": "^1.9.2",
-    "tailwindcss": "^3.4.3",
-    "vinxi": "^0.4.3"
-  },
-  "engines": {
-    "node": ">=18"
-  }
+	"name": "listarr-frontend",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"test": "npm run test:integration && npm run test:unit",
+		"test:ts": "tsc --noEmit",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write .",
+		"test:integration": "playwright test",
+		"test:unit": "vitest",
+		"generate-types": "bun scripts/generate-types.js"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.49.1",
+		"@skeletonlabs/skeleton": "2.10.3",
+		"@skeletonlabs/tw-plugin": "0.4.0",
+		"@sveltejs/adapter-auto": "^3.3.1",
+		"@sveltejs/kit": "^2.12.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"@tailwindcss/forms": "0.5.9",
+		"@tailwindcss/typography": "0.5.15",
+		"@types/eslint": "^9.6.1",
+		"@types/node": "22.10.2",
+		"autoprefixer": "10.4.20",
+		"eslint": "^9.17.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-svelte": "^2.46.1",
+		"globals": "^15.14.0",
+		"openapi-typescript": "^7.4.4",
+		"postcss": "8.4.49",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.2",
+		"svelte": "^5.14.4",
+		"svelte-check": "^4.1.1",
+		"tailwindcss": "3.4.17",
+		"typescript": "^5.7.2",
+		"typescript-eslint": "^8.18.1",
+		"vite": "^6.0.3",
+		"vite-plugin-tailwind-purgecss": "0.3.5",
+		"vitest": "^2.1.8"
+	},
+	"type": "module",
+	"dependencies": {
+		"@floating-ui/dom": "1.6.12",
+		"@vincjo/datatables": "^2.2.0",
+		"highlight.js": "11.11.0",
+		"openapi-fetch": "^0.13.3",
+		"swagger2openapi": "^7.0.8"
+	}
 }
