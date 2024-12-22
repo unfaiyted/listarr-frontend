@@ -30,7 +30,7 @@ async function convertSwaggerToOpenAPI(swagger) {
 async function generateTypes() {
 	try {
 		console.log('Fetching Swagger schema from backend...');
-		const response = await fetch('http://localhost:8080/swagger/doc.json');
+		const response = await fetch('http://192.168.0.126:8080/swagger/doc.json');
 
 		if (!response.ok) {
 			throw new Error(`Failed to fetch Swagger schema: ${response.statusText}`);
